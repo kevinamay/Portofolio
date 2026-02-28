@@ -68,22 +68,16 @@ export default function Achievement() {
   const getPdfUrl = (file: PdfFile) => {
     if (file.url) return file.url; // Use direct URL if available
     if (!file.publicId) return '';
-    return getCldImageUrl({
-      src: file.publicId,
-      format: 'pdf',
-      assetType: 'image'
-    });
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/${file.publicId}.pdf`;
   };
 
   // --- 4. FUNGSI GENERATE PREVIEW (THUMBNAIL) ---
   const getPreviewUrl = (file: PdfFile) => {
-    if (!file.publicId) return null; // We need publicId to generate a thumb via Cloudinary API reliably
-
-    return getCldImageUrl({
-      src: file.publicId,
-      format: 'jpg',    // Convert first page to JPG
-      assetType: 'image'
-    });
+    if (!file.publicId) return null;
+    // Construct Cloudinary image URL directly for PDF thumbnail (convert to jpg)
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    return `https://res.cloudinary.com/${cloudName}/image/upload/f_jpg,q_auto,w_800/${file.publicId}.jpg`;
   };
 
   const handleOpenModal = (item: AchievementData) => {
