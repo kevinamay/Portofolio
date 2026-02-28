@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import DownloadCVButton from '@/components/DownloadCVButton';
+import Navbar from '@/components/Navbar';
 import {
   Github,
   ExternalLink,
@@ -90,18 +90,7 @@ export default async function Portfolio() {
       <div className="absolute top-[70%] left-[5%] text-4xl text-pink-300/30 font-mono font-bold animate-floatSlow">[ ]</div>
 
       {/* --- NAVBAR --- */}
-      <nav className="glass-nav sticky top-0 w-full z-50 px-8 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-8 font-medium">
-            <Link href="/" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">Home</Link>
-            <Link href="/about" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">About</Link>
-            <Link href="/portfolio" className="text-pink-800 font-bold hover:text-pink-600 transition hover:-translate-y-1">Portfolio</Link>
-            <Link href="/achievement" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">Achievement</Link>
-            <Link href="/contact" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">Contact</Link>
-          </div>
-          <DownloadCVButton />
-        </div>
-      </nav>
+      <Navbar />
 
       {/* --- MAIN CONTENT --- */}
       <div className="max-w-7xl mx-auto relative z-10 py-16 px-6 md:px-8">

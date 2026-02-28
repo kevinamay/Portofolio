@@ -1,8 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import DownloadCVButton from '@/components/DownloadCVButton';
-
-export default function Home() {
+import Navbar from '@/components/Navbar'; export default function Home() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FFF5F8] via-[#FFF0F5] to-[#FFE8F0]">
 
@@ -21,35 +19,7 @@ export default function Home() {
       <div className="absolute bottom-[30%] left-[15%] text-2xl animate-sparkle delay-1000">✨</div>
 
       {/* --- NAVBAR --- */}
-      {/* --- NAVBAR --- */}
-      <nav className="glass-nav sticky top-0 w-full z-50 px-8 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-8 font-medium">
-            {/* Link ke Home */}
-            <Link href="/" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Home
-            </Link>
-
-            {/* Link ke About (INI YANG KITA PERBAIKI) */}
-            <Link href="/about" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              About
-            </Link>
-
-            {/* Link lainnya (bisa disiapkan untuk nanti) */}
-            <Link href="/portfolio" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Portfolio
-            </Link>
-            <Link href="/achievement" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Achievement
-            </Link>
-            <Link href="/contact" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Contact
-            </Link>
-          </div>
-
-          <DownloadCVButton />
-        </div>
-      </nav>
+      <Navbar />
 
       {/* --- HERO SECTION --- */}
       <section className="relative z-10 px-8 py-12 lg:py-20 max-w-7xl mx-auto">
@@ -57,7 +27,7 @@ export default function Home() {
 
           {/* Left Side: Typography */}
           <div className="space-y-6 text-center lg:text-left">
-            <h1 className="font-serif font-black text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#D946A6] via-[#EC4899] to-[#F9A8D4]">
+            <h1 className="font-serif font-black text-4xl sm:text-5xl lg:text-7xl leading-[1.1] tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#D946A6] via-[#EC4899] to-[#F9A8D4]">
               KEVINA<br />MAYDIVA<br />HERIANSAPUTRI
             </h1>
             <h2 className="font-sans text-2xl md:text-3xl font-bold text-[#DB2777]">
@@ -68,7 +38,7 @@ export default function Home() {
               I create beautiful, functional, and user-centered digital experiences that bring ideas to life.
               Currently teaching MySQL and web development as a Teaching Assistant at Universitas Teknologi Yogyakarta.
             </p>
-            <div className="flex gap-4 justify-center lg:justify-start pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
               <Link href="/about" className="bg-gradient-to-r from-[#F9A8D4] to-[#F687B3] text-white font-semibold px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:-translate-y-1 transition">
                 Get In Touch
               </Link>
@@ -79,7 +49,7 @@ export default function Home() {
           </div>
 
           {/* Right Side: 3D Illustration (Reconstructed from Canva CSS) */}
-          <div className="relative h-[400px] w-full flex items-center justify-center">
+          <div className="relative h-[300px] md:h-[400px] w-full flex items-center justify-center mt-12 lg:mt-0">
 
             {/* Background Clouds */}
             <div className="cloud animate-float" style={{ top: '10%', left: '5%', width: '80px', height: '50px' }}></div>

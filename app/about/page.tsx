@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import DownloadCVButton from '@/components/DownloadCVButton'; // Import Link agar navigasi jalan
+import Navbar from '@/components/Navbar';
 import { BookOpen, CheckCircle2, Code2, Database, Terminal, Layout } from 'lucide-react';
 
 export default function About() {
@@ -16,35 +16,8 @@ export default function About() {
       <div className="absolute top-[20%] right-[15%] text-6xl text-pink-300/30 font-mono font-bold animate-pulseCustom">&lt;/&gt;</div>
       <div className="absolute bottom-[25%] right-[25%] text-5xl text-pink-200/30 font-mono font-bold animate-float">{"{}"}</div>
 
-      {/* --- NAVBAR (Updated: Sama Persis dengan Home) --- */}
-      <nav className="glass-nav sticky top-0 w-full z-50 px-8 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-8 font-medium">
-            {/* Link ke Home */}
-            <Link href="/" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Home
-            </Link>
-
-            {/* Link ke About (Sedang Aktif) */}
-            <Link href="/about" className="text-pink-800 font-bold hover:text-pink-600 transition hover:-translate-y-1">
-              About
-            </Link>
-
-            {/* Link lainnya */}
-            <Link href="/portfolio" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Portfolio
-            </Link>
-            <Link href="/achievement" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Achievement
-            </Link>
-            <Link href="/contact" className="text-[#D946A6] hover:text-pink-600 transition hover:-translate-y-1">
-              Contact
-            </Link>
-          </div>
-
-          <DownloadCVButton />
-        </div>
-      </nav>
+      {/* --- NAVBAR --- */}
+      <Navbar />
 
       {/* --- MAIN CONTENT (BENTO GRID) --- */}
       <div className="max-w-7xl mx-auto relative z-10 py-10 px-6 md:px-8">
