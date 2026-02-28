@@ -42,9 +42,7 @@ export default function About() {
             </Link>
           </div>
 
-          <button className="bg-gradient-to-r from-[#F9A8D4] to-[#F687B3] text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            Download CV
-          </button>
+          <DownloadCVButton />
         </div>
       </nav>
 
