@@ -27,7 +27,7 @@ import Navbar from '@/components/Navbar'; export default function Home() {
 
           {/* Left Side: Typography */}
           <div className="space-y-6 text-center lg:text-left">
-            <h1 className="font-serif font-black text-4xl sm:text-5xl lg:text-7xl leading-[1.1] tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#D946A6] via-[#EC4899] to-[#F9A8D4]">
+            <h1 className="font-serif font-black text-[clamp(2.5rem,8vw,4rem)] md:text-6xl lg:text-7xl leading-[1.1] tracking-tight md:tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#D946A6] via-[#EC4899] to-[#F9A8D4] break-all sm:break-words">
               KEVINA<br />MAYDIVA<br />HERIANSAPUTRI
             </h1>
             <h2 className="font-sans text-2xl md:text-3xl font-bold text-[#DB2777]">
