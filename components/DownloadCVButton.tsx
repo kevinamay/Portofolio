@@ -1,12 +1,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { database } from '@/lib/firebase';
 import { ref, onValue } from 'firebase/database';
-import { Download, ExternalLink, X, FileText, CheckCircle2 } from 'lucide-react';
+import { Download, ExternalLink, X, FileText, CheckCircle2, ChevronRight } from 'lucide-react';
 
 const DEFAULT_CV_PATH = '/CV_Kevina_Maydiva_Heriansaputri.pdf';
 const DEFAULT_CV_FILENAME = 'CV_Kevina_Maydiva_Heriansaputri.pdf';
+
+const CV_PAGES = [
+    { page: 1, src: '/cv-pages/cv-page-1.webp', title: 'Halaman 1: Profil, Pendidikan, Pengalaman Kerja' },
+    { page: 2, src: '/cv-pages/cv-page-2.webp', title: 'Halaman 2: Pengalaman Proyek, Organisasi, Sertifikasi & Pelatihan' },
+    { page: 3, src: '/cv-pages/cv-page-3.webp', title: 'Halaman 3: Pelatihan Lanjutan, Keahlian Teknis & Minat' }
+];
 
 interface DownloadCVButtonProps {
     onBeforeOpen?: () => void;
@@ -17,8 +24,13 @@ export default function DownloadCVButton({ onBeforeOpen, className = '' }: Downl
     const [cvUrl, setCvUrl] = useState<string>(DEFAULT_CV_PATH);
     const [cvName, setCvName] = useState<string>(DEFAULT_CV_FILENAME);
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
-    // Sync with Firebase if a custom CV was uploaded via admin, otherwise use local bundled PDF
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Sync with Firebase if an updated CV was provided, otherwise default to local bundled PDF
     useEffect(() => {
         try {
             const cvRef = ref(database, 'cvLink');
@@ -40,7 +52,7 @@ export default function DownloadCVButton({ onBeforeOpen, className = '' }: Downl
         }
     }, []);
 
-    // Handle Escape key to close modal
+    // Handle Escape key and body scroll lock
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -68,6 +80,128 @@ export default function DownloadCVButton({ onBeforeOpen, className = '' }: Downl
         setIsOpen(true);
     };
 
+    const modalContent = isOpen ? (
+        <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-5 transition-all duration-200"
+            onClick={() => setIsOpen(false)}
+        >
+            <div
+                className="bg-white rounded-3xl w-full max-w-4xl max-h-[92vh] sm:max-h-[90vh] flex flex-col shadow-2xl border border-pink-200 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {/* MODAL HEADER (STAYS FIXED AT TOP) */}
+                <div className="shrink-0 flex items-center justify-between p-4 sm:px-6 border-b border-pink-100 bg-gradient-to-r from-[#FFF0F5] to-white gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#F9A8D4] to-[#D946A6] flex items-center justify-center text-white shadow-md shrink-0">
+                            <FileText size={20} />
+                        </div>
+                        <div className="min-w-0">
+                            <h2 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 font-serif truncate">
+                                Curriculum Vitae — Kevina Maydiva Heriansaputri
+                            </h2>
+                            <p className="text-xs text-pink-600 font-medium truncate">
+                                Sarjana Komputer (S.Kom) • UTY (IPK 3.75) • Full-Stack &amp; Mobile
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Header Action Buttons */}
+                    <div className="flex items-center gap-2 shrink-0">
+                        {/* Direct Download Button */}
+                        <a
+                            href={cvUrl}
+                            download={cvName}
+                            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-[#F9A8D4] to-[#D946A6] text-white font-bold text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                            title="Download file CV PDF sekarang"
+                        >
+                            <Download size={14} />
+                            <span>Download CV</span>
+                        </a>
+
+                        {/* Open in New Tab Button */}
+                        <a
+                            href={cvUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl border border-pink-200 text-[#D946A6] font-semibold text-xs hover:bg-pink-50 transition-colors"
+                            title="Buka file PDF asli di tab baru"
+                        >
+                            <ExternalLink size={14} />
+                            <span>Buka PDF Asli</span>
+                        </a>
+
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="p-2 rounded-full hover:bg-pink-100/70 text-gray-500 hover:text-gray-800 transition-colors"
+                            aria-label="Tutup Pratinjau CV"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                </div>
+
+                {/* MODAL BODY: SCROLLABLE CRISP CV PAGES (ALWAYS VISIBLE, NEVER BLANK) */}
+                <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-slate-100 space-y-6">
+                    {CV_PAGES.map((pageInfo) => (
+                        <div
+                            key={pageInfo.page}
+                            className="bg-white rounded-2xl shadow-md border border-slate-200/80 overflow-hidden max-w-3xl mx-auto transition-transform hover:shadow-lg"
+                        >
+                            {/* Page header tag */}
+                            <div className="bg-slate-50 px-4 py-2 border-b border-slate-100 flex items-center justify-between text-xs text-gray-500">
+                                <span className="font-semibold text-gray-700">
+                                    {pageInfo.title}
+                                </span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-pink-100 text-[#D946A6] font-bold text-[11px]">
+                                    Halaman {pageInfo.page} / 3
+                                </span>
+                            </div>
+
+                            {/* Page Document Image */}
+                            <div className="relative w-full bg-white flex justify-center">
+                                <img
+                                    src={pageInfo.src}
+                                    alt={`Curriculum Vitae Kevina Maydiva Heriansaputri - Halaman ${pageInfo.page}`}
+                                    className="w-full h-auto block select-none"
+                                    loading="lazy"
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* MODAL FOOTER (STAYS FIXED AT BOTTOM) */}
+                <div className="shrink-0 p-3 sm:px-6 border-t border-pink-100 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+                        <span>
+                            Dokumen resmi: <strong className="text-gray-800">CV_Kevina_Maydiva_Heriansaputri.pdf</strong> (3 Halaman)
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100 transition-colors"
+                        >
+                            Tutup
+                        </button>
+                        <a
+                            href={cvUrl}
+                            download={cvName}
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F9A8D4] to-[#D946A6] text-white font-bold text-xs shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                        >
+                            <Download size={15} />
+                            <span>Download CV (PDF)</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    ) : null;
+
     return (
         <>
             {/* TRIGGER BUTTON (NAVBAR) */}
@@ -80,119 +214,8 @@ export default function DownloadCVButton({ onBeforeOpen, className = '' }: Downl
                 <span>Download CV</span>
             </button>
 
-            {/* MODAL CV VIEWER & DOWNLOAD DIALOG */}
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-[200] flex items-center justify-center bg-black/75 backdrop-blur-md p-3 sm:p-6 transition-all duration-300 animate-fadeIn"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <div
-                        className="bg-white rounded-3xl w-full max-w-5xl h-[90vh] flex flex-col relative shadow-2xl border border-pink-200 overflow-hidden"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* MODAL HEADER */}
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:px-6 border-b border-pink-100 bg-gradient-to-r from-[#FFF0F5] to-white gap-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#F9A8D4] to-[#D946A6] flex items-center justify-center text-white shadow-md flex-shrink-0">
-                                    <FileText size={20} />
-                                </div>
-                                <div>
-                                    <h2 className="text-base sm:text-lg font-bold text-gray-900 font-serif leading-tight">
-                                        Curriculum Vitae — Kevina Maydiva Heriansaputri
-                                    </h2>
-                                    <p className="text-xs text-pink-600 font-medium">
-                                        Sarjana Komputer (S.Kom) • Universitas Teknologi Yogyakarta (IPK 3.75)
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Header Action Buttons */}
-                            <div className="flex items-center gap-2 self-end sm:self-center">
-                                {/* Direct Download Button */}
-                                <a
-                                    href={cvUrl}
-                                    download={cvName}
-                                    className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#F9A8D4] to-[#D946A6] text-white font-bold text-xs shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                                    title="Download file CV PDF sekarang"
-                                >
-                                    <Download size={14} />
-                                    <span>Download CV</span>
-                                </a>
-
-                                {/* Open in New Tab Button */}
-                                <a
-                                    href={cvUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-pink-200 text-[#D946A6] font-semibold text-xs hover:bg-pink-50 transition-colors"
-                                    title="Buka CV di tab browser baru"
-                                >
-                                    <ExternalLink size={14} />
-                                    <span className="hidden md:inline">Buka Tab Baru</span>
-                                </a>
-
-                                {/* Close Button */}
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="p-2 rounded-full hover:bg-pink-100/70 text-gray-500 hover:text-gray-800 transition-colors"
-                                    aria-label="Tutup Pratinjau CV"
-                                >
-                                    <X size={20} />
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* MODAL BODY: PDF VIEWER IFRAME */}
-                        <div className="flex-1 bg-slate-100 relative overflow-hidden flex flex-col">
-                            <iframe
-                                src={`${cvUrl}#toolbar=1&navpanes=0`}
-                                className="w-full h-full border-0"
-                                title="Pratinjau CV Kevina Maydiva Heriansaputri"
-                            />
-
-                            {/* Mobile Fallback Overlay Banner in case embedded PDF is hidden on small mobile viewports */}
-                            <div className="sm:hidden bg-pink-50 p-2.5 text-center border-t border-pink-200 flex items-center justify-between text-xs text-pink-800">
-                                <span>Perlu mengunduh file dokumen?</span>
-                                <a
-                                    href={cvUrl}
-                                    download={cvName}
-                                    className="font-bold underline text-[#D946A6]"
-                                >
-                                    Download PDF
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* MODAL FOOTER */}
-                        <div className="p-4 sm:px-6 border-t border-pink-100 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
-                            <div className="flex items-center gap-2 text-xs text-gray-600">
-                                <CheckCircle2 size={16} className="text-emerald-500 flex-shrink-0" />
-                                <span>
-                                    Format dokumen: <strong className="text-gray-800">PDF</strong> • Siap diunduh langsung untuk keperluan rekrutmen HRD
-                                </span>
-                            </div>
-
-                            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100 transition-colors"
-                                >
-                                    Tutup
-                                </button>
-                                <a
-                                    href={cvUrl}
-                                    download={cvName}
-                                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#F9A8D4] to-[#D946A6] text-white font-bold text-xs shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all"
-                                >
-                                    <Download size={15} />
-                                    <span>Download CV Lengkap</span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            )}
+            {/* PORTAL TO DOCUMENT.BODY TO ESCAPE NAVBAR BACKDROP-FILTER/CONTAINING BLOCK */}
+            {mounted && modalContent && createPortal(modalContent, document.body)}
         </>
     );
 }
