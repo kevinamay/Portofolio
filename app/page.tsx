@@ -50,69 +50,55 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Side: Aesthetic Portrait Frame & 3D Ornaments */}
-          <div className="relative h-[390px] sm:h-[440px] md:h-[470px] w-full flex items-center justify-center mt-6 lg:mt-0">
+          {/* Right Side: High-End Aesthetic Portrait Card & Ornaments */}
+          <div className="relative h-[430px] sm:h-[480px] md:h-[510px] w-full flex items-center justify-center mt-8 lg:mt-0">
 
             {/* Background Clouds */}
-            <div className="cloud animate-float" style={{ top: '6%', left: '4%', width: '85px', height: '52px' }}></div>
-            <div className="cloud animate-floatSlow" style={{ top: '12%', right: '6%', width: '105px', height: '62px' }}></div>
+            <div className="cloud animate-float" style={{ top: '4%', left: '8%', width: '90px', height: '55px' }}></div>
+            <div className="cloud animate-floatSlow" style={{ top: '8%', right: '10%', width: '110px', height: '65px' }}></div>
 
-            {/* Ambient Radiant Glow behind Photo */}
-            <div className="absolute w-[270px] h-[270px] sm:w-[320px] sm:h-[320px] rounded-full bg-gradient-to-tr from-[#F9A8D4] via-[#F472B6] to-[#D946A6] opacity-35 blur-3xl animate-pulseCustom"></div>
+            {/* Soft Ambient Light Glow behind Card */}
+            <div className="absolute w-[320px] h-[320px] rounded-full bg-gradient-to-tr from-pink-300/20 via-pink-200/20 to-purple-200/20 blur-3xl -z-10 pointer-events-none"></div>
 
-            {/* The Monitor (Existing Ornament) */}
-            <div className="monitor animate-floatSlow z-10" style={{ top: '25px', right: '40px' }}>
+            {/* The Monitor (Floating Top-Right) */}
+            <div className="monitor animate-floatSlow z-30" style={{ top: '20px', right: '25px' }}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl">💻</div>
             </div>
 
-            {/* Main Portrait Frame with Kevina's Photo */}
-            <div className="relative z-20 animate-float flex flex-col items-center">
-              <div className="w-[215px] h-[215px] sm:w-[255px] sm:h-[255px] md:w-[285px] md:h-[285px] rounded-full p-2 bg-gradient-to-tr from-[#F9A8D4] via-[#EC4899] to-[#D946A6] shadow-[0_20px_60px_rgba(217,70,166,0.35)] ring-4 ring-white/80">
-                <div className="w-full h-full rounded-full overflow-hidden bg-white/95 border-4 border-white shadow-inner relative group">
+            {/* Main Aesthetic Portrait Card (Modern Glassmorphism) */}
+            <div className="relative z-20 animate-float">
+              <div className="w-[260px] sm:w-[290px] md:w-[310px] aspect-[3/4] rounded-[2.5rem] p-3 bg-white/70 backdrop-blur-xl border-2 border-white/90 shadow-[0_20px_50px_-10px_rgba(217,70,166,0.18)] transition-all duration-500 hover:shadow-[0_25px_60px_-10px_rgba(217,70,166,0.25)] hover:-translate-y-1">
+                <div className="w-full h-full rounded-[2rem] overflow-hidden bg-gradient-to-b from-pink-50/60 via-white to-pink-50/40 relative shadow-inner">
                   <img
                     src="/kevina.webp"
                     alt="Kevina Maydiva Heriansaputri"
-                    className="w-full h-full object-cover object-top scale-105 group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105 select-none"
                   />
-                  {/* Soft Gradient Overlay for harmonious aesthetic blend */}
+                  {/* Gentle gradient overlay at bottom edge for seamless blend */}
                   <div className="absolute inset-0 bg-gradient-to-t from-pink-900/10 via-transparent to-transparent pointer-events-none"></div>
                 </div>
               </div>
-
-              {/* Floating Verified Artisan Badge */}
-              <div className="absolute -bottom-3 sm:-bottom-4 bg-white/95 backdrop-blur-md border border-pink-200 shadow-xl px-4 py-1.5 rounded-full flex items-center gap-2 z-30 animate-floatSlow">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D946A6]"></span>
-                </span>
-                <span className="text-xs font-bold text-gray-800 tracking-wide font-sans">
-                  Kevina Maydiva
-                </span>
-                <span className="text-[11px] text-[#D946A6] font-semibold bg-pink-50 px-2 py-0.5 rounded-full border border-pink-100">
-                  S.Kom
-                </span>
-              </div>
             </div>
 
-            {/* The Laptop (Existing Ornament) */}
-            <div className="laptop animate-float z-30" style={{ bottom: '25px', left: '35px' }}>
+            {/* The Laptop (Floating Bottom-Left) */}
+            <div className="laptop animate-float z-30" style={{ bottom: '15px', left: '25px' }}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg">💖</div>
             </div>
 
-            {/* Floating Code Elements (Existing Ornaments) */}
-            <div className="absolute top-[10%] left-[8%] text-3xl text-pink-400 font-mono font-bold animate-float drop-shadow-sm">
+            {/* Floating Code Elements with Clean Margins */}
+            <div className="absolute top-[6%] left-[10%] text-3xl text-pink-400/80 font-mono font-bold animate-float drop-shadow-sm select-none">
               &lt;div&gt;
             </div>
-            <div className="absolute bottom-[14%] right-[10%] text-2xl text-pink-500 font-mono font-bold animate-floatSlow drop-shadow-sm">
+            <div className="absolute bottom-[20%] right-[6%] text-2xl text-pink-500/80 font-mono font-bold animate-floatSlow drop-shadow-sm select-none">
               function()
             </div>
-            <div className="absolute bottom-[20%] left-[6%] text-xl text-pink-300 font-mono font-bold animate-pulseCustom">
+            <div className="absolute bottom-[16%] left-[8%] text-xl text-pink-300/80 font-mono font-bold animate-pulseCustom select-none">
               const
             </div>
 
-            {/* Extra Decorations (Existing Ornaments) */}
-            <div className="absolute top-[58%] left-[2%] text-3xl animate-pulseCustom">💖</div>
-            <div className="absolute top-[28%] right-[6%] text-2xl animate-sparkle">✨</div>
+            {/* Extra Delicate Decorations */}
+            <div className="absolute top-[52%] left-[4%] text-2xl animate-pulseCustom select-none">💖</div>
+            <div className="absolute top-[24%] right-[8%] text-2xl animate-sparkle select-none">✨</div>
 
           </div>
 
