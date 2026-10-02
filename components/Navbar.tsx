@@ -102,7 +102,7 @@ export default function Navbar() {
                 </div>
 
                 <div className={`mt-8 transition-all duration-500 delay-200 transform ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                    <DownloadCVButton />
+                    <DownloadCVButton onBeforeOpen={() => setIsOpen(false)} />
                 </div>
             </div>
         </>
