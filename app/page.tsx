@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar'; export default function Home() {
+import Navbar from '@/components/Navbar';
+
+export default function Home() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FFF5F8] via-[#FFF0F5] to-[#FFE8F0]">
 
@@ -22,7 +24,7 @@ import Navbar from '@/components/Navbar'; export default function Home() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <section className="relative z-10 px-8 py-12 lg:py-20 max-w-7xl mx-auto">
+      <section className="relative z-10 px-6 sm:px-8 py-10 lg:py-20 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* Left Side: Typography */}
@@ -48,48 +50,69 @@ import Navbar from '@/components/Navbar'; export default function Home() {
             </div>
           </div>
 
-          {/* Right Side: 3D Illustration (Reconstructed from Canva CSS) */}
-          <div className="relative h-[300px] md:h-[400px] w-full flex items-center justify-center mt-12 lg:mt-0">
+          {/* Right Side: Aesthetic Portrait Frame & 3D Ornaments */}
+          <div className="relative h-[390px] sm:h-[440px] md:h-[470px] w-full flex items-center justify-center mt-6 lg:mt-0">
 
             {/* Background Clouds */}
-            <div className="cloud animate-float" style={{ top: '10%', left: '5%', width: '80px', height: '50px' }}></div>
-            <div className="cloud animate-floatSlow" style={{ top: '20%', right: '10%', width: '100px', height: '60px' }}></div>
+            <div className="cloud animate-float" style={{ top: '6%', left: '4%', width: '85px', height: '52px' }}></div>
+            <div className="cloud animate-floatSlow" style={{ top: '12%', right: '6%', width: '105px', height: '62px' }}></div>
 
-            {/* The Monitor */}
-            <div className="monitor animate-floatSlow z-10">
+            {/* Ambient Radiant Glow behind Photo */}
+            <div className="absolute w-[270px] h-[270px] sm:w-[320px] sm:h-[320px] rounded-full bg-gradient-to-tr from-[#F9A8D4] via-[#F472B6] to-[#D946A6] opacity-35 blur-3xl animate-pulseCustom"></div>
+
+            {/* The Monitor (Existing Ornament) */}
+            <div className="monitor animate-floatSlow z-10" style={{ top: '25px', right: '40px' }}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl">💻</div>
             </div>
 
-            {/* The Character (Programmer Girl) */}
-            <div className="character animate-float z-20">
-              {/* Rambut/Badan */}
-              <div className="absolute top-[30%] left-[50%] -translate-x-1/2 w-[60px] h-[60px] bg-white rounded-full shadow-sm"></div>
-              <div className="absolute top-[35%] left-[35%] w-3 h-3 bg-gray-800 rounded-full"></div>
-              <div className="absolute top-[35%] right-[35%] w-3 h-3 bg-gray-800 rounded-full"></div>
-              {/* Senyum */}
-              <div className="absolute top-[48%] left-[50%] -translate-x-1/2 w-5 h-2.5 bg-pink-300 rounded-b-full"></div>
-              {/* Baju */}
-              <div className="absolute top-[20%] left-[20%] right-[20%] h-10 bg-[#8B4F6F] rounded-t-[50px]"></div>
+            {/* Main Portrait Frame with Kevina's Photo */}
+            <div className="relative z-20 animate-float flex flex-col items-center">
+              <div className="w-[215px] h-[215px] sm:w-[255px] sm:h-[255px] md:w-[285px] md:h-[285px] rounded-full p-2 bg-gradient-to-tr from-[#F9A8D4] via-[#EC4899] to-[#D946A6] shadow-[0_20px_60px_rgba(217,70,166,0.35)] ring-4 ring-white/80">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white/95 border-4 border-white shadow-inner relative group">
+                  <img
+                    src="/kevina.webp"
+                    alt="Kevina Maydiva Heriansaputri"
+                    className="w-full h-full object-cover object-top scale-105 group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {/* Soft Gradient Overlay for harmonious aesthetic blend */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-pink-900/10 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+              </div>
+
+              {/* Floating Verified Artisan Badge */}
+              <div className="absolute -bottom-3 sm:-bottom-4 bg-white/95 backdrop-blur-md border border-pink-200 shadow-xl px-4 py-1.5 rounded-full flex items-center gap-2 z-30 animate-floatSlow">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D946A6]"></span>
+                </span>
+                <span className="text-xs font-bold text-gray-800 tracking-wide font-sans">
+                  Kevina Maydiva
+                </span>
+                <span className="text-[11px] text-[#D946A6] font-semibold bg-pink-50 px-2 py-0.5 rounded-full border border-pink-100">
+                  S.Kom
+                </span>
+              </div>
             </div>
 
-            {/* Laptop */}
-            <div className="laptop animate-float z-30">
+            {/* The Laptop (Existing Ornament) */}
+            <div className="laptop animate-float z-30" style={{ bottom: '25px', left: '35px' }}>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg">💖</div>
             </div>
 
-            {/* Floating Code Elements */}
-            <div className="absolute top-[15%] left-[15%] text-3xl text-pink-400 font-mono font-bold animate-float">
+            {/* Floating Code Elements (Existing Ornaments) */}
+            <div className="absolute top-[10%] left-[8%] text-3xl text-pink-400 font-mono font-bold animate-float drop-shadow-sm">
               &lt;div&gt;
             </div>
-            <div className="absolute bottom-[20%] right-[20%] text-2xl text-pink-500 font-mono font-bold animate-floatSlow">
+            <div className="absolute bottom-[14%] right-[10%] text-2xl text-pink-500 font-mono font-bold animate-floatSlow drop-shadow-sm">
               function()
             </div>
-            <div className="absolute bottom-[20%] left-[10%] text-xl text-pink-300 font-mono font-bold animate-pulseCustom">
+            <div className="absolute bottom-[20%] left-[6%] text-xl text-pink-300 font-mono font-bold animate-pulseCustom">
               const
             </div>
 
-            {/* Extra Decorations */}
-            <div className="absolute top-[60%] left-[5%] text-3xl animate-pulseCustom">💖</div>
+            {/* Extra Decorations (Existing Ornaments) */}
+            <div className="absolute top-[58%] left-[2%] text-3xl animate-pulseCustom">💖</div>
+            <div className="absolute top-[28%] right-[6%] text-2xl animate-sparkle">✨</div>
 
           </div>
 
