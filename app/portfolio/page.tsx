@@ -1,80 +1,13 @@
 import React from 'react';
-import Link from 'next/link';
 import Navbar from '@/components/Navbar';
-import {
-  Github,
-  ExternalLink,
-  ShoppingBag,
-  ClipboardList,
-  CloudSun,
-  Utensils,
-  Activity,
-  Code2,
-  Smartphone,
-  Laptop
-} from 'lucide-react';
+import PortfolioClient from '@/components/PortfolioClient';
+import { getEnrichedRepos } from '@/lib/projectsData';
 
-// --- ARTI HELPER ---
-interface Repo {
-  id: number;
-  name: string;
-  description: string;
-  language: string;
-  html_url: string;
-  homepage: string | null;
-  topics: string[];
-}
-
-async function getRepos(): Promise<Repo[]> {
-  const res = await fetch('https://api.github.com/users/kevinamay/repos', {
-    next: { revalidate: 3600 } // Cache for 1 hour
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
-
-const getLanguageStyle = (lang: string) => {
-  switch (lang?.toLowerCase()) {
-    case 'typescript':
-    case 'javascript':
-      return {
-        icon: <Code2 size={32} className="text-blue-500" />,
-        gradient: "from-blue-100 to-indigo-100",
-        techColor: "bg-blue-100 text-blue-700",
-        type: 'laptop'
-      };
-    case 'dart':
-    case 'flutter':
-      return {
-        icon: <Smartphone size={32} className="text-cyan-500" />,
-        gradient: "from-cyan-100 to-blue-100",
-        techColor: "bg-cyan-100 text-cyan-700",
-        type: 'phone'
-      };
-    case 'html':
-    case 'css':
-      return {
-        icon: <Laptop size={32} className="text-orange-500" />,
-        gradient: "from-orange-100 to-red-100",
-        techColor: "bg-orange-100 text-orange-700",
-        type: 'laptop'
-      };
-    default:
-      return {
-        icon: <ShoppingBag size={32} className="text-pink-400" />, // Default icon
-        gradient: "from-pink-100 to-purple-100",
-        techColor: "bg-pink-100 text-pink-700",
-        type: 'laptop'
-      };
-  }
-};
+// Revalidate data every 60 seconds for live updates
+export const revalidate = 60;
 
 export default async function Portfolio() {
-  const repos = await getRepos();
+  const repos = await getEnrichedRepos();
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FFF0F5] via-[#FFE4E9] to-[#FFF5F8]">
@@ -96,98 +29,21 @@ export default async function Portfolio() {
       <div className="max-w-7xl mx-auto relative z-10 py-16 px-6 md:px-8">
 
         {/* Header Section */}
-        <header className="text-center mb-16 max-w-4xl mx-auto">
+        <header className="text-center mb-12 max-w-4xl mx-auto">
+          <span className="text-xs uppercase tracking-widest font-bold text-[#D946A6] bg-pink-100/80 px-4 py-1.5 rounded-full inline-block mb-4 shadow-sm">
+            Live Projects &amp; Repositories
+          </span>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-[#D946A6] font-serif tracking-wide">
             My Portfolio
           </h1>
           <p className="text-lg text-gray-700 leading-relaxed font-sans">
-            Explore my collection of projects spanning web development, mobile applications, and academic work.
-            Each project represents my dedication to creating beautiful, functional, and user-centered digital experiences.
+            Koleksi karya rekayasa perangkat lunak saya yang mencakup pengembangan web full-stack, aplikasi mobile Flutter, hingga modul praktikum dan bahan ajar perkuliahan. Data disinkronkan langsung dari repositori GitHub.
           </p>
         </header>
 
-        {/* Project Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Interactive Client Grid with Search, Filter & Sort */}
+        <PortfolioClient initialRepos={repos} />
 
-          {repos.map((repo) => {
-            const style = getLanguageStyle(repo.language);
-
-            return (
-              <article
-                key={repo.id}
-                className="group bg-white/70 backdrop-blur-xl border border-white/80 shadow-xl rounded-3xl p-6 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col"
-              >
-
-                {/* DEVICE PREVIEW AREA */}
-                <div className="flex justify-center mb-6">
-                  {style.type === 'laptop' ? (
-                    // Laptop Style Frame
-                    <div className="w-full aspect-video bg-gray-200 rounded-lg p-2 shadow-inner border-2 border-gray-300 relative">
-                      <div className={`w-full h-full rounded bg-gradient-to-br ${style.gradient} flex items-center justify-center`}>
-                        {style.icon}
-                      </div>
-                    </div>
-                  ) : (
-                    // Phone Style Frame
-                    <div className="w-32 aspect-[9/16] bg-gray-200 rounded-[2rem] p-2 shadow-inner border-4 border-gray-300 relative">
-                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-gray-300 rounded-full"></div>
-                      <div className={`w-full h-full rounded-[1.5rem] bg-gradient-to-br ${style.gradient} flex items-center justify-center`}>
-                        {style.icon}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Project Info */}
-                <h3 className="text-xl font-bold mb-2 text-gray-800 group-hover:text-[#D946A6] transition-colors break-words">
-                  {repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4 flex-grow leading-relaxed line-clamp-3">
-                  {repo.description || "No description available for this project."}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {repo.language && (
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${style.techColor}`}>
-                      {repo.language}
-                    </span>
-                  )}
-                  {/* Additional dummy tags if topics are empty, or use topics if available */}
-                  {repo.topics && repo.topics.map(topic => (
-                    <span key={topic} className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">
-                      {topic}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Buttons */}
-                <div className="flex gap-3 mt-auto">
-                  <a
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl border-2 border-[#F9A8D4] text-[#D946A6] font-semibold text-sm hover:bg-[#F9A8D4] hover:text-white transition-colors"
-                  >
-                    <Github size={16} /> GitHub
-                  </a>
-                  {repo.homepage && (
-                    <a
-                      href={repo.homepage}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#F9A8D4] to-[#F687B3] text-white font-semibold text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                    >
-                      <ExternalLink size={16} /> Demo
-                    </a>
-                  )}
-                </div>
-
-              </article>
-            );
-          })}
-
-        </div>
       </div>
     </main>
   );
